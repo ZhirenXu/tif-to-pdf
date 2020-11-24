@@ -1,3 +1,6 @@
+import pytesseract
+from wand.image import Image
+from wand.display import display
 import subprocess
 import os
 
