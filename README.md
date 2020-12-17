@@ -17,9 +17,9 @@ Publish data: 12/14/20
       
       tesseract (tested version: v5.0.0-alpha.20201127)
       
-   *If you import file name from CSV file, file names must in first row and no header is allowed*
-   *Duplicate file name is ok as the script will filter input data*
-   *Don't type the wrong file name*
+   *If you import file name from CSV file, file names must in first row and no header is allowed  
+   *Duplicate file name is ok as the script will filter input data  
+   *Don't type the wrong file name*  
 
 ### Instruction:  
    1. put the script in the same folder as files you want merge&convert  
