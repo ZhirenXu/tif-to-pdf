@@ -3,7 +3,7 @@ Author: Zhiren Xu
 Publish data: 12/14/20
 
 ### What does it do
-   Find tif files base on input, merge them into one tif under naming rule, then convert them into OCR pdf files. Merged tif file will be deleted after the convert process finishs.
+   Find tif files base on input in the same directory with the script, merge them into one tif under naming rule, then convert them into OCR pdf files. Merged tif file will be deleted after the convert process finishs.
    
    
 ### Prerequisites
