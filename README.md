@@ -17,8 +17,10 @@ Publish data: 12/14/20
       
       tesseract (tested version: v5.0.0-alpha.20201127)
       
-   *If you import file name from CSV file, file names must in first row and no header is allowed  
-   *Duplicate file name is ok as the script will filter input data  
+   *If you import file name from CSV file, file names must in first row and no header is allowed*
+   
+   *Duplicate file name is ok as the script will filter input data*
+   
    *Don't type the wrong file name*  
 
 ### Instruction:  
