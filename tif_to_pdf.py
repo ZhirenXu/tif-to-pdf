@@ -3,6 +3,7 @@ import os
 import time
 import sys
 import csv
+import gc
 from multiprocessing import Pool
 
 os.environ['OMP_THREAD_LIMIT'] = '1'
@@ -65,9 +66,9 @@ def getFilePatternList():
         while(isContinue):
             print("File pattern: ", end = '');
             pattern = input()
-            if pattern != "finish":
+            if pattern != "finish" and len(pattern) > 0:
                 patternList.append(pattern)
-            else:
+            elif pattern == "finish":
                 isContinue = False
             
         print("\n")
@@ -114,6 +115,10 @@ def process(filePatternList):
                 os.remove(file)
             except:
                 print("Fail to delete ", file)
+                try:
+                    os.remove(file[:-4] + ".pdf")
+                except:
+                    print("Fail to delete ", file[:-4] + ".pdf")
         print("Done!")
     except:
         print("ERROR: unable to convert tif or error happen when delete file. Output tif may still be correct.\nPress enter to exit.")
@@ -132,7 +137,7 @@ def mergeTifParallel(fullFilePatternList, outputTifList):
         data = [fullFilePatternList.pop(0), outputTifList.pop(0)]
         dataPairs.append(data)
     try:
-        with Pool() as p:
+        with Pool(12) as p:
             p.map(mergeTif, dataPairs)
     except:
         print("ERROR: parallel merge fail.\nPress enter to exit.")
@@ -151,6 +156,7 @@ def mergeTif(param):
         print("Finish merged file: ", dest, "...", end = '');
         subprocess.run(["magick", src, dest],capture_output=True)
         print("Done")
+        gc.collect()
 
 ## covert merged tif to OCR pdf in multiprocess way
 # @param    outputTifListCp
@@ -165,13 +171,10 @@ def convertToPdfParallel(outputTifListCp, outputPdfList):
         dataPairs.append(data)
     print("Convert merged tif file to OCR pdf...")
     print("DO NOT close the script until further notice. The process may take several minutes...")
-    print("If you can find Tesseract processes in Task Manager and CPU usage is high, the convertor is running...")
+    print("If you can find Tesseract processes in Task Manager and CPU usage is high, the convertor is running...\n")
     try:
         with Pool() as p:
-            t_start = time.time()
             p.map(convertToPdf, dataPairs)
-            t_end = time.time()
-            print("Process Time: ", t_end - t_start, "s\n")
     except:
         print("ERROR: parallel convert fail.\nPress enter to exit.")
         input()
@@ -185,13 +188,18 @@ def convertToPdfParallel(outputTifListCp, outputPdfList):
 def convertToPdf(param):
     src = param[0]
     dest = param[1]
-    subprocess.run(["tesseract", src, dest, "pdf"],capture_output=True)
+    #print("\nProcess ", src, "... ", end = '')
+    t_start = time.time()
+    subprocess.run(["tesseract", src, dest, "pdf"], capture_output = True)
+    t_end = time.time()
+    print(src, " Done\tProcess Time: ", t_end - t_start, "s")
+    gc.collect()
     
 def welcome():
     print("********************************************")
-    print("*     TIF to OCR PDF Converter v1.0.1      *")
+    print("*     TIF to OCR PDF Converter v1.0.2      *")
     print("*            Author: Zhiren Xu             *")
-    print("*         published data: 12/14/20          *")
+    print("*         published data: 04/20/21         *")
     print("********************************************")
 
 def end():
