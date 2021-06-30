@@ -162,7 +162,7 @@ def mergeTif(param):
 # @param    outputTifListCp
 #           A list contain all merged tif file name as input file
 # @param    outputPdfList
-#           A lsit contain all output pdf file name
+#           A list contain all output pdf file name
 def convertToPdfParallel(outputTifListCp, outputPdfList):
     dataPairs = []
 
